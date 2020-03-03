@@ -8,27 +8,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/assapir/appcenter-go-cli/config"
 )
-
-type config struct {
-	OwnerName string `json:"owner"`
-	AppName   string `json:"app"`
-	APIKey    string `json:"apiKey"`
-}
-
-func getConfig() (*config, error) {
-	data, err := ioutil.ReadFile("config.json")
-	if err != nil {
-		return nil, err
-	}
-
-	var jsonConfig config
-	if err := json.Unmarshal(data, &jsonConfig); err != nil {
-		return nil, err
-	}
-
-	return &jsonConfig, nil
-}
 
 func post(addr string, body interface{}, apiToken string, jsonBody bool) ([]byte, error) {
 	var bodyValue []byte
@@ -65,7 +47,7 @@ func post(addr string, body interface{}, apiToken string, jsonBody bool) ([]byte
 	return bodyBytes, nil
 }
 
-func createUpload(config *config) (uploadID string, uploadURL string, err error) {
+func createUpload(config *config.Config) (uploadID string, uploadURL string, err error) {
 	const baseURL = "https://appcenter.ms/api/v0.1/apps/%s/%s/release_uploads"
 	createUploadURL := fmt.Sprintf(baseURL, config.OwnerName, config.AppName)
 	log.Println(createUploadURL)
@@ -86,7 +68,6 @@ func createUpload(config *config) (uploadID string, uploadURL string, err error)
 }
 
 func main() {
-
 	args := os.Args[1:]
 	if len(args) == 0 {
 		log.Fatal("error: no command line arguments supplied")
@@ -94,7 +75,7 @@ func main() {
 
 	log.Println("got with this args:", args)
 
-	config, err := getConfig()
+	config, err := config.GetConfig()
 	if err != nil {
 		log.Fatal(err)
 	}

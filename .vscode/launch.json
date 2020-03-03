@@ -11,7 +11,7 @@
             "mode": "auto",
             "program": "${fileDirname}",
             "env": {},
-            "args": []
+            "args": ["/Users/assapir/Projects/tech6.assaf.xamarintest.apk"]
         }
     ]
 }
