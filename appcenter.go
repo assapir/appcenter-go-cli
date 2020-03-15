@@ -31,6 +31,9 @@ func createUpload(config *config.Config) (uploadID string, uploadURL string, err
 }
 
 func main() {
+	if len(os.Args) < 2 {
+		log.Fatal("error: no command line arguments supplied")
+	}
 	arg := os.Args[1]
 	if len(arg) == 0 {
 		log.Fatal("error: no command line arguments supplied")
